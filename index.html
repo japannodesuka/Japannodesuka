@@ -17,7 +17,7 @@
     <!-- Header & Navigation -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-            <h1 class="text-3xl font-bold japan-red mb-4 md:mb-0">JAPAN<span class="text-black">INSIDER</span></h1>
+            <h1 class="text-3xl font-bold japan-red mb-4 md:mb-0">JAPAN<span class="text-black">NODESUKA</span></h1>
             <nav class="flex flex-wrap justify-center gap-4 text-gray-600 font-medium">
                 <a href="#" class="hover:text-red-600">หน้าแรก</a>
                 <a href="#travel" class="hover:text-red-600">เที่ยวญี่ปุ่น</a>
@@ -166,6 +166,45 @@
             <p>© 2024 Japan Insider Co., Ltd. All rights reserved.</p>
         </div>
     </footer>
+    <!-- ตรงนี้คือส่วนที่เราจะเอาข่าวมาลง (Container) -->
+<div id="news-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- ข้อมูลจะถูกดึงมาใส่ตรงนี้อัตโนมัติด้วย JavaScript -->
+</div>
+
+<script>
+    // ฟังก์ชันสำหรับดึงข้อมูลจากไฟล์ JSON
+    async function loadNews() {
+        try {
+            // 1. ดึงไฟล์ news.json มา
+            const response = await fetch('news.json');
+            const data = await response.json();
+
+            // 2. หาที่วางใน HTML (id="news-list")
+            const container = document.getElementById('news-list');
+            container.innerHTML = ''; // ล้างข้อมูลเก่าออกก่อน
+
+            // 3. วนลูปสร้าง HTML จากข้อมูลใน JSON
+            data.forEach(item => {
+                const card = `
+                    <div class="bg-white rounded-lg overflow-hidden shadow-md">
+                        <img src="${item.image}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <span class="text-xs font-bold uppercase text-red-600">${item.category}</span>
+                            <h4 class="font-bold text-lg mt-1 hover:text-red-600 cursor-pointer">${item.title}</h4>
+                            <p class="text-gray-500 text-sm mt-2">${item.desc}</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        } catch (error) {
+            console.error('Error loading news:', error);
+        }
+    }
+
+    // เรียกใช้งานฟังก์ชันเมื่อโหลดหน้าเว็บ
+    loadNews();
+</script>
 
 </body>
 </html>
